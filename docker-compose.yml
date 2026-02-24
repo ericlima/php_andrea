@@ -1,0 +1,51 @@
+services:
+  app:
+    build: .
+    container_name: php_app
+    restart: unless-stopped
+    ports:
+      - "8181:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=meu_banco
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+    networks:
+      - app-network
+
+  db:
+    image: postgres:16-alpine
+    container_name: php_db
+    hostname: db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=meu_banco
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: unless-stopped
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db-data:

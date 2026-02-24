@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS grocery_items (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    packaging VARCHAR(255),
+    average_price DECIMAL(10, 2),
+    completed BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
